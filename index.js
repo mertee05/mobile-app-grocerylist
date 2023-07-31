@@ -4,6 +4,7 @@ import {
   ref,
   push,
   onValue,
+  remove,
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
 const appSettings = {
@@ -22,21 +23,58 @@ addButtonEl.addEventListener("click", function () {
   let inputValue = inputFieldEl.value;
   push(shoppingListInDB, inputValue);
   clearInputFieldEl();
-  appendItemToShoppingListEl(inputValue);
 });
+
+// onValue(shoppingListInDB, function (snapshot) {
+//   let itemsArray = Object.entries(snapshot.val());
+
+//   clearShoppinglistEl();
+
+//   for (let i = 0; i < itemsArray.length; i++) {
+//     let currentItem = itemsArray[i];
+//     let currentItemID = currentItem[0];
+//     let currentItemValue = currentItem[1];
+//     appendItemToShoppingListEl(currentItem);
+//   }
+// });
+
 onValue(shoppingListInDB, function (snapshot) {
-  let currentList = Object.values(snapshot.val());
-  // clearShoppingListEl();
-  for (let i = 0; i < currentList.length; i++) {
-    console.log(currentList[i]);
+  if (snapshot.exists()) {
+    let itemsArray = Object.entries(snapshot.val());
+
+    clearShoppingListEl();
+
+    for (let i = 0; i < itemsArray.length; i++) {
+      let currentItem = itemsArray[i];
+      let currentItemID = currentItem[0];
+      let currentItemValue = currentItem[1];
+
+      appendItemToShoppingListEl(currentItem);
+    }
+  } else {
+    shoppingListEl.innerHTML = "No items here... yet";
   }
 });
-// function clearShoppingListEl() {
-//   shoppingListEl.innerhtml = "";
-// }
+
+function clearShoppingListEl() {
+  shoppingListEl.innerHTML = "";
+}
 function clearInputFieldEl() {
   inputFieldEl.value = "";
 }
-function appendItemToShoppingListEl(itemValue) {
-  shoppingListEl.innerHTML += `<li>${itemValue}</li>`;
+
+function appendItemToShoppingListEl(item) {
+  let itemID = item[0];
+  let itemValue = item[1];
+
+  let newEl = document.createElement("li");
+
+  newEl.textContent = itemValue;
+
+  newEl.addEventListener("dblclick", function () {
+    let exactLocationOfItemInDB = ref(database, `shoppingList/${itemID}`);
+    remove(exactLocationOfItemInDB);
+  });
+
+  shoppingListEl.append(newEl);
 }
