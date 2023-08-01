@@ -3,7 +3,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Rubik", sans-serif;
-  background-color: #eef0f4;
+
   color: #432000;
   user-select: none;
 }
@@ -17,6 +17,7 @@ body {
   border: black 5px solid;
   border-radius: 15px;
   padding: 25px;
+  background-color: #736b92;
 }
 
 img {
@@ -38,7 +39,7 @@ input {
 
 button {
   color: #fdfdfd;
-  background-color: #ac485a;
+  background-color: #e5beed;
   border: 0;
   padding: 15px;
   border-radius: 8px;
@@ -47,7 +48,7 @@ button {
   font-family: "Rubik", sans-serif;
 }
 button:hover {
-  background-color: #432000;
+  background-color: #9593d9;
   cursor: pointer;
 }
 ul,
@@ -72,5 +73,5 @@ ul li {
   font-size: 20px;
 }
 ul li:hover {
-  background-color: #ffecc7;
+  background-color: #9593d9;
 }
